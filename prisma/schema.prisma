@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Room {
+  id            String    @id @default(cuid())
+  name          String
+  location      String
+  size          Int       // Size in m² or capacity
+  hasBeamer     Boolean   @default(false)
+  hasWhiteboard Boolean   @default(false)
+  equipment     String?   // Additional equipment as JSON
+  bookings      Booking[]
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  startTime DateTime
+  endTime   DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  room      Room     @relation(fields: [roomId], references: [id])
+  roomId    String
+}
+
+model User {
+  id       String    @id @default(cuid())
+  email    String    @unique
+  name     String?
+  bookings Booking[]
+}
