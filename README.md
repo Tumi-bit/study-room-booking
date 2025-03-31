@@ -1,36 +1,148 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Study Room Booking System - Setup Guide
 
-## Getting Started
+This guide will help you set up and run the Study Room Booking System on your computer after obtaining the code.
 
-First, run the development server:
+## Prerequisites
+
+Before starting, make sure you have the following installed:
+
+- Node.js (version 18 or higher)
+- npm (comes with Node.js)
+- PostgreSQL (or another database supported by Prisma)
+
+## Step 1: Clone the Repository
+
+Download or clone the code repository to your local machine.
+
+```bash
+git clone [https://github.com/Tumi-bit/study-room-booking.git]
+cd study-room-booking
+```
+
+## Step 2: Install Dependencies
+
+Install all required packages by running:
+
+```bash
+npm install
+```
+
+This may take a few minutes to complete.
+
+## Step 3: Set Up Environment Variables
+
+Create a `.env.local` file in the project root directory with the following content:
+
+```
+# Database connection
+DATABASE_URL="postgresql://username:password@localhost:5432/studyrooms"
+
+# NextAuth configuration
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="generate-a-random-string-here"
+```
+
+Replace the database connection string with your own database credentials.
+
+Generate a secure random string for `NEXTAUTH_SECRET` with:
+
+```bash
+openssl rand -base64 32
+```
+
+## Step 4: Set Up the Database
+
+1. Create a new PostgreSQL database named "studyrooms" (or use the name you specified in the connection string).
+
+2. Push the database schema to your database:
+
+```bash
+npx prisma db push
+```
+
+3. (Optional) Seed the database with initial data:
+
+```bash
+npx prisma db seed
+```
+
+If you encounter any errors with the seed command, you can try:
+
+```bash
+npx ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
+```
+
+## Step 5: Start the Development Server
+
+Launch the application in development mode:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The server should start, and you'll see a message indicating it's running at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Step 6: Create a User Account
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Open your browser and navigate to http://localhost:3000
+2. Click on "Registrieren" to create a new account
+3. Fill in your name, email, and password
+4. Log in with your new credentials
 
-## Learn More
+## Step 7: Using the Application
 
-To learn more about Next.js, take a look at the following resources:
+After logging in, you can:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Browse available study rooms
+- Filter rooms by location, size, and equipment
+- Book a room by selecting a date and time
+- View and manage your bookings
+- Cancel bookings you no longer need
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Troubleshooting
 
-## Deploy on Vercel
+### Database Connection Issues
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+If you encounter database connection problems:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Verify your database is running
+2. Check that the connection string in `.env.local` is correct
+3. Ensure your database user has the necessary permissions
+
+### Authentication Problems
+
+If you experience authentication errors:
+
+1. Make sure `NEXTAUTH_SECRET` is set properly
+2. Check that `NEXTAUTH_URL` matches your development server URL
+3. Restart the server after making changes to these values
+
+### Dependency Conflicts
+
+If you encounter package dependency conflicts, try installing with:
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### Prisma Client Generation
+
+If you modify the database schema and encounter errors, regenerate the Prisma client:
+
+```bash
+npx prisma generate
+```
+
+## Next Steps
+
+For production deployment:
+
+1. Set up environment variables on your hosting platform
+2. Build the production version: `npm run build`
+3. Start the production server: `npm start`
+
+## Support
+
+For additional help or questions, please refer to the project documentation or contact the development team.
+README.md
+Displaying README.md.
