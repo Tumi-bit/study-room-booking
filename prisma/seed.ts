@@ -15,7 +15,6 @@ async function main() {
       email: "test@example.com",
       name: "Test User",
 
-      // This is just for demonstration
     },
   });
 
